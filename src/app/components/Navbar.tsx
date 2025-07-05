@@ -1,11 +1,18 @@
 "use client";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  SignUpButton,
+  UserButton,
+} from "@clerk/nextjs";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
-  
+
   return (
     <nav className="flex justify-between items-center bg-neutral-900 py-3 px-6 border-b border-neutral-700">
       <div
@@ -45,24 +52,17 @@ export default function Navbar() {
         </Link>
       </div>
       <div className="flex gap-4 items-center">
-        <Link
-          href="/register"
-          className={
-            pathname === "/register"
-              ? "text-gray-100 font-semibold"
-              : "text-gray-400"
-          }
-        >
-          Register
-        </Link>
-        <Link
-          href="/login"
-          className={
-            pathname === "/login" ? "text-gray-100 font-semibold" : "text-gray-400"
-          }
-        >
-          Login
-        </Link>
+        <SignedOut>
+          <SignInButton mode="modal" />
+          <SignUpButton mode="modal">
+            <button className="bg-[#502ed8] text-white rounded-full font-medium text-sm sm:text-base py-2 px-4 sm:px-5 cursor-pointer">
+              Sign Up
+            </button>
+          </SignUpButton>
+        </SignedOut>
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
       </div>
     </nav>
   );
